@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,7 +10,7 @@ from utils import *
 from params_layout import *
 from data_cleaning import clean_vaccines_data, clean_covid_data
 
-
+country = sys.argv[1]
 ### Download most recent data from Kaggle
 api = KaggleApi()
 api.authenticate()
@@ -36,8 +37,8 @@ matplotlib.rc('font', **font)
 
 ## Initializing the subplots
 fig, axs = plt.subplots(nrows=2, ncols = 1, figsize=(8,12))
-axs[0].barh(daily_vac_country['country'],
-    daily_vac_country['daily_vaccinations'],
+axs[0].barh(vaccines_dataset['country'],
+    vaccines_dataset['daily_vaccinations'],
     color=color_palette)
 
 ## First graph: Total number of vaccinations in top 20 countries

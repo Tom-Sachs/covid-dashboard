@@ -14,16 +14,13 @@ def clean_vaccines_data():
     daily_vac.loc[:,'date'] = pd.to_datetime(daily_vac['date'])
 
     # Group by country
-    daily_vac_country = daily_vac
-    .groupby(['country','vaccines'])
-    .sum()
-    .sort_values('daily_vaccinations',
+    daily_vac_country = daily_vac.groupby(
+        ['country','vaccines']).sum().sort_values('daily_vaccinations',
         ascending=False)
 
     # Keep only the top 20 countries
     daily_vac_country = daily_vac_country.head(20)
-    daily_vac_country.loc[:,'daily_vaccinations'] = daily_vac_country['daily_vaccinations']
-                                                    .astype(int)
+    daily_vac_country.loc[:,'daily_vaccinations'] = daily_vac_country['daily_vaccinations'].astype(int)
     daily_vac_country.reset_index(inplace=True)
     daily_vac_country.sort_values('daily_vaccinations',
         ascending=True,
@@ -33,14 +30,14 @@ def clean_vaccines_data():
 
 
 def clean_covid_data(country):
-''' Returns two DataFrames :
+    ''' Returns two DataFrames :
 
-- country_data: With daily new COVID-19 cases, daily new COVID-19 vaccinations for a
-selected country and for the last 6 months.
+    - country_data: With daily new COVID-19 cases, daily new COVID-19 vaccinations for a
+    selected country and for the last 6 months.
 
-- weekly_covid_data: With weekly new COVID-19 cases for a selected country and
-for the last 6 months.
-'''
+    - weekly_covid_data: With weekly new COVID-19 cases for a selected country and
+    for the last 6 months.
+    '''
 
     # Define variable six_months_ago, to keep data from last 6 months only
     today = datetime.date.today()
@@ -62,8 +59,10 @@ for the last 6 months.
     country_data.set_index('date', inplace=True)
 
     # Join with vaccines
-    vaccination_data = daily_vac[daily_vac['country']==country]
-    .set_index('date')[['daily_vaccinations']]
+    vaccines_dataset = pd.read_csv('data/country_vaccinations.csv')
+    daily_vac = vaccines_dataset[['country','date','daily_vaccinations','vaccines']]
+    daily_vac.loc[:,'date'] = pd.to_datetime(daily_vac['date'])
+    vaccination_data = daily_vac[daily_vac['country']==country].set_index('date')[['daily_vaccinations']]
 
     # Filling missing values by 0 only at the beginning of the period.
     # For the most recent data, we want to keep NaNs to prevent the daily
@@ -76,8 +75,7 @@ for the last 6 months.
     covid_data = pd.read_csv('data/worldometer_coronavirus_daily_data.csv')
     covid_data.loc[:,'date'] = pd.to_datetime(covid_data['date']) - pd.to_timedelta(7,unit='d')
     weekly_covid_data = covid_data[covid_data['date'] > str(six_months_ago)]
-    weekly_covid_data = weekly_covid_data[weekly_covid_data['country']==country]
-    .groupby(pd.Grouper(key='date', freq='W-MON')).mean()
+    weekly_covid_data = weekly_covid_data[weekly_covid_data['country']==country].groupby(pd.Grouper(key='date', freq='W-MON')).mean()
 
     return country_data, weekly_covid_data
 
