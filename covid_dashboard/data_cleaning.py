@@ -29,7 +29,7 @@ def clean_vaccines_data():
     # Keep only the top 20 countries
     daily_vac_country = daily_vac_country.head(20)
     daily_vac_country.reset_index(inplace=True)
-    daily_vac_country['daily_vaccinations'].astype(int, inplace=True)
+    daily_vac_country['daily_vaccinations'] = daily_vac_country['daily_vaccinations'].astype(int)
     daily_vac_country.sort_values('daily_vaccinations',
         ascending=True,
         inplace=True)
