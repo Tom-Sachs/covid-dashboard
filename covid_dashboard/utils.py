@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import datetime
 
 ### Color utils to create a custom color palette for plotting
 
@@ -43,7 +44,22 @@ def linear_gradient(start_hex, finish_hex="#FFFFFF", n=10):
 
     return color_dict(RGB_list)
 
-### Annotate function to add data labels to bar plots
+
+
+### Date utils to filter data
+
+def get_date_six_months_ago():
+    today = datetime.date.today()
+
+    year_six_months_ago = today.year + ((today.month - 6)//12)
+    month_six_months_ago = (today.month + 6) % 12
+    day_six_months_ago = today.day
+
+    return datetime.date(year_six_months_ago,month_six_months_ago, day_six_months_ago)
+
+
+
+### Matplotlib utils to annotate
 
 def annotate_barh(axs, space=7):
 

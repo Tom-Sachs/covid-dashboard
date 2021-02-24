@@ -3,11 +3,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime
+from utils import get_date_six_months_ago
+
+standardized_country_names = {'United Arab Emirates': 'UAE',
+        'United Kingdom':'UK',
+        'United States':'USA'}
 
 def clean_vaccines_data():
 
     # Load dataset
     vaccines_dataset = pd.read_csv('data/country_vaccinations.csv')
+
+    # Standardize country names
+    vaccines_dataset['country'].replace(standardized_country_names,inplace=True)
 
     # Keep relevant columns and convert date to datetime object
     daily_vac = vaccines_dataset[['country','date','daily_vaccinations','vaccines']]
@@ -20,7 +28,6 @@ def clean_vaccines_data():
 
     # Keep only the top 20 countries
     daily_vac_country = daily_vac_country.head(20)
-    daily_vac_country.loc[:,'daily_vaccinations'] = daily_vac_country['daily_vaccinations'].astype(int)
     daily_vac_country.reset_index(inplace=True)
     daily_vac_country.sort_values('daily_vaccinations',
         ascending=True,
@@ -40,17 +47,17 @@ def clean_covid_data(country):
     '''
 
     # Define variable six_months_ago, to keep data from last 6 months only
-    today = datetime.date.today()
+    six_months_ago = get_date_six_months_ago()
 
-    year_six_months_ago = today.year + ((today.month - 6)//12)
-    month_six_months_ago = (today.month + 6) % 12
-    day_six_months_ago = today.day
+    # Load data
+    covid_data = pd.read_csv('data/worldometer_coronavirus_daily_data.csv')
+    vaccines_dataset = pd.read_csv('data/country_vaccinations.csv')
 
-    six_months_ago = datetime.date(year_six_months_ago,
-     month_six_months_ago, day_six_months_ago)
+    # Standardize country names
+    covid_data['country'].replace(standardized_country_names,inplace=True)
+    vaccines_dataset['country'].replace(standardized_country_names,inplace=True)
 
-    # Daily_cases
-    covid_data = pd.read_csv('data/worldometer_coronavirus_daily_data.csv') # Load Data
+    # CLean covid_data
     covid_data.loc[:,'date'] = pd.to_datetime(covid_data['date']) # Convert date to datetime
     country_data = covid_data[covid_data['country']==country] # Select Country Data
     country_data = country_data[['date','country',
@@ -58,8 +65,7 @@ def clean_covid_data(country):
     country_data = country_data[country_data['date']>str(six_months_ago)] # Filter date to keep last 6 months only
     country_data.set_index('date', inplace=True)
 
-    # Join with vaccines
-    vaccines_dataset = pd.read_csv('data/country_vaccinations.csv')
+    # Join with vaccines_dataset
     daily_vac = vaccines_dataset[['country','date','daily_vaccinations','vaccines']]
     daily_vac.loc[:,'date'] = pd.to_datetime(daily_vac['date'])
     vaccination_data = daily_vac[daily_vac['country']==country].set_index('date')[['daily_vaccinations']]
