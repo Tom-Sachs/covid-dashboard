@@ -1,202 +1,102 @@
-[Afg
-Antigua And A
-A
-Az
-Ba
-Bhutan
+Albania
+Algeria
+Andorra
+Anguilla
+Argentina
+Australia
+Austria
+Azerbaijan
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Bermuda
 Bolivia
-Bosnia And Herzegovina
-Botswana
 Brazil
-British Virgin Islands
-Brunei Darussalam
 Bulgaria
-Burkina Faso
-Burundi
-Cabo Verde
 Cambodia
-Cameroon
 Canada
-Caribbean Netherlands
 Cayman Islands
-Central African Republic
-Chad
-Channel Islands
 Chile
-China Hong Kong Sar
-China Macao Sar
 China
 Colombia
-Comoros
-Congo
 Costa Rica
-Cote D Ivoire
 Croatia
-Cuba
-Curacao
 Cyprus
-Czech Republic
-Democratic Republic Of The Congo
+Czechia
 Denmark
-Djibouti
-Dominica
 Dominican Republic
 Ecuador
 Egypt
-El Salvador
-Equatorial Guinea
-Eritrea
+England
 Estonia
-Ethiopia
 Faeroe Islands
-Falkland Islands Malvinas
-Fiji
+Falkland Islands
 Finland
 France
-French Guiana
-French Polynesia
-Gabon
-Gambia
-Georgia
 Germany
-Ghana
 Gibraltar
 Greece
 Greenland
-Grenada
-Guadeloupe
-Guatemala
-Guinea Bissau
-Guinea
+Guernsey
 Guyana
-Haiti
-Holy See
-Honduras
 Hungary
 Iceland
 India
 Indonesia
 Iran
-Iraq
 Ireland
-Isle Of Man
+Isle of Man
 Israel
 Italy
-Jamaica
 Japan
-Jordan
-Kazakhstan
-Kenya
+Jersey
 Kuwait
-Kyrgyzstan
-Laos
 Latvia
 Lebanon
-Lesotho
-Liberia
-Libya
 Liechtenstein
 Lithuania
 Luxembourg
-Macedonia
-Madagascar
-Malawi
-Malaysia
+Macao
 Maldives
-Mali
 Malta
-Marshall Islands
-Martinique
-Mauritania
 Mauritius
-Mayotte
 Mexico
-Micronesia
-Moldova
 Monaco
-Mongolia
-Montenegro
-Montserrat
 Morocco
-Mozambique
 Myanmar
-Namibia
 Nepal
 Netherlands
-New Caledonia
 New Zealand
-Nicaragua
-Niger
-Nigeria
+Northern Cyprus
+Northern Ireland
 Norway
 Oman
 Pakistan
 Panama
-Papua New Guinea
-Paraguay
 Peru
-Philippines
 Poland
 Portugal
 Qatar
-Reunion
 Romania
 Russia
-Rwanda
-Saint Barthelemy
-Saint Kitts And Nevis
-Saint Lucia
-Saint Martin
-Saint Pierre And Miquelon
-Saint Vincent And The Grenadines
-Samoa
-San Marino
-Sao Tome And Principe
+Saint Helena
 Saudi Arabia
-Senegal
+Scotland
 Serbia
 Seychelles
-Sierra Leone
 Singapore
-Sint Maarten
 Slovakia
 Slovenia
-Solomon Islands
-Somalia
 South Africa
-South Korea
-South Sudan
 Spain
 Sri Lanka
-State Of Palestine
-Sudan
-Suriname
-Swaziland
 Sweden
 Switzerland
-Syria
-Taiwan
-Tajikistan
-Tanzania
-Thailand
-Timor Leste
-Togo
-Trinidad And Tobago
-Tunisia
 Turkey
-Turks And Caicos Islands
-Uganda
+Turks and Caicos Islands
+UAE
 UK
-Ukraine
-United Arab Emirates
-Uruguay
 USA
-Uzbekistan
-Vanuatu
-Venezuela
-Viet Nam
-Wallis And Futuna Islands
-Western Sahara
-Yemen
-Zambia
-Zimbabwe
+Wales

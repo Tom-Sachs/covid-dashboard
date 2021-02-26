@@ -42,7 +42,7 @@ axs[0].barh(vaccines_dataset['country'],
     color=color_palette)
 
 ## First graph: Total number of vaccinations in top 20 countries
-axs[0].set_title('Number of Covid-19 vaccins administrated by country')
+axs[0].set_title('Number of Covid-19 vaccines administrated by country')
 axs[0].set_xlabel("Number of vaccines administrated (in millions)")
 axs[0].set_xlim(0,100000000)
 axs[0].grid(False)
