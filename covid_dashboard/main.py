@@ -4,73 +4,77 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-import seaborn as sns
-from kaggle.api.kaggle_api_extended import KaggleApi
 from utils import *
 from params_layout import *
-from data_cleaning import clean_vaccines_data, clean_covid_data
+from clean_data import clean_vaccines_data, clean_covid_data
+from get_data import *
 
-country = sys.argv[1]
-### Download most recent data from Kaggle
-api = KaggleApi()
-api.authenticate()
+def plot_data(country_data, weekly_covid_data, vaccines_data,
+  country = 'France'):
 
-api.dataset_download_files('josephassaker/covid19-global-dataset',
-    path='data/', unzip=True) # COVID-19 cases dataset
+  # Define color_palette defined in params_layout
+  color_palette = linear_gradient(START_COLOR,
+      finish_hex=END_COLOR,
+      n=20)['hex']
 
-api.dataset_download_files('gpreda/covid-world-vaccination-progress',
-    path='data/', unzip=True) # COVID-19 vaccinations dataset
+  plt.style.use(STYLE)
 
-### Cleaning DataFrames
-vaccines_dataset = clean_vaccines_data()
-country_data, weekly_covid_data = clean_covid_data(country)
+  # Setting font defined in params_layout
+  matplotlib.rc('font', **font)
 
-# Define color_palette defined in params_layout
-color_palette = linear_gradient(START_COLOR,
-    finish_hex=END_COLOR,
-    n=20)['hex']
+  ## Initializing the subplots
+  fig, axs = plt.subplots(nrows=2, ncols = 1, figsize=(8,12))
+  axs[0].barh(vaccines_data['country'],
+      vaccines_data['daily_vaccinations'],
+      color=color_palette)
 
-plt.style.use(STYLE)
+  ## First graph: Total number of vaccinations in top 20 countries
+  axs[0].set_title('Number of Covid-19 vaccines administrated by country')
+  axs[0].set_xlabel("Number of vaccines administrated (in millions)")
+  axs[0].set_xlim(0,100000000)
+  axs[0].grid(False)
+  ticks = [0, 20, 40, 60, 80, 100]
+  axs[0].set_xticklabels(ticks)
+  annotate_barh(axs[0]) # Add labels to each horizontal bar
 
-# Setting font defined in params_layout
-matplotlib.rc('font', **font)
+  ## Second graph: For a selected country, number of daily and weekly cases, and
+  # daily new vaccinations.
+  axs[1].set_title(f'COVID-19 in {country}')
+  axs[1].set_ylabel('Number of persons')
+  axs[1].plot(country_data.index,
+              country_data['daily_new_cases'],
+              c=END_COLOR,
+              label='daily new cases')
 
-## Initializing the subplots
-fig, axs = plt.subplots(nrows=2, ncols = 1, figsize=(8,12))
-axs[0].barh(vaccines_dataset['country'],
-    vaccines_dataset['daily_vaccinations'],
-    color=color_palette)
+  axs[1].plot(country_data.index,
+              country_data['daily_vaccinations'],
+              c=START_COLOR,
+              label='daily new vaccinations')
 
-## First graph: Total number of vaccinations in top 20 countries
-axs[0].set_title('Number of Covid-19 vaccines administrated by country')
-axs[0].set_xlabel("Number of vaccines administrated (in millions)")
-axs[0].set_xlim(0,100000000)
-axs[0].grid(False)
-ticks = [0, 20, 40, 60, 80, 100]
-axs[0].set_xticklabels(ticks)
-annotate_barh(axs[0]) # Add labels to each horizontal bar
+  axs[1].bar(weekly_covid_data.index,
+             weekly_covid_data['daily_new_cases'],
+             width=5,
+             alpha=0.3,
+             color=END_COLOR,
+             label='weekly contaminations')
 
-## Second graph: For a selected country, number of daily and weekly cases, and
-# daily new vaccinations.
-axs[1].set_title(f'COVID-19 in {country}')
-axs[1].set_ylabel('Number of persons')
-axs[1].plot(country_data.index,
-            country_data['daily_new_cases'],
-            c=END_COLOR,
-            label='daily new cases')
+  ### Adding the legend
+  plt.legend()
+  plt.savefig('covid_dashboard.png')
 
-axs[1].plot(country_data.index,
-            country_data['daily_vaccinations'],
-            c=START_COLOR,
-            label='daily new vaccinations')
 
-axs[1].bar(weekly_covid_data.index,
-           weekly_covid_data['daily_new_cases'],
-           width=5,
-           alpha=0.3,
-           color=END_COLOR,
-           label='weekly contaminations')
 
-### Adding the legend
-plt.legend()
-plt.savefig('covid_dashboard.png')
+if __name__ == "__main__":
+
+  country = sys.argv[1]
+
+  ### Loading data
+  covid_data = get_covid_data()
+  vaccines_data = get_vaccines_data()
+
+  ### Cleaning DataFrames
+  country_data, weekly_covid_data = clean_covid_data(covid_data, vaccines_data, country)
+  vaccines_data = clean_vaccines_data(vaccines_data)
+
+  ### Plot data
+  plot_data(country_data, weekly_covid_data, vaccines_data, country=country)
