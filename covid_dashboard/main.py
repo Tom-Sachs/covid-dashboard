@@ -9,56 +9,64 @@ from params_layout import *
 from clean_data import clean_vaccines_data, clean_covid_data
 from get_data import *
 
-def plot_data(country_data, weekly_covid_data, vaccines_data,
+def plot_vaccinations_barh(ax, vaccines_data):
+  ''' Plots horizontal barchart displaying number of vaccines administrated in
+  top 20 countries '''
+
+  ax.barh(vaccines_data['country'],
+      vaccines_data['daily_vaccinations'],
+      color=color_palette)
+  ax.set_title('Number of Covid-19 vaccines administrated by country')
+  ax.set_xlabel("Number of vaccines administrated (in millions)")
+  ax.set_xlim(0,100000000)
+  ax.grid(False)
+  ticks = [0, 20, 40, 60, 80, 100]
+  ax.set_xticklabels(ticks)
+  annotate_barh(ax) # Add labels to each horizontal bar
+
+def plot_daily_covid_and_vaccines_line(ax,country_data):
+
+  ax.set_title(f'COVID-19 in {country}')
+  ax.set_ylabel('Number of persons')
+
+  ax.plot(country_data.index,
+    country_data['daily_new_cases'],
+    c=END_COLOR,
+    label='daily new cases')
+
+  ax.plot(country_data.index,
+    country_data['daily_vaccinations'],
+    c=START_COLOR,
+    label='daily new vaccinations')
+
+def plot_weekly_covid_cases_bar(ax,weekly_covid_data):
+
+  ax.bar(weekly_covid_data.index,
+    weekly_covid_data['daily_new_cases'],
+    width=5,
+    alpha=0.3,
+    color=END_COLOR,
+    label='weekly contaminations')
+
+def plot_graphs(country_data, weekly_covid_data, vaccines_data,
   country = 'France'):
 
-  # Define color_palette defined in params_layout
-  color_palette = linear_gradient(START_COLOR,
-      finish_hex=END_COLOR,
-      n=20)['hex']
-
+  # Matplotlib Styles
   plt.style.use(STYLE)
-
-  # Setting font defined in params_layout
   matplotlib.rc('font', **font)
 
   ## Initializing the subplots
   fig, axs = plt.subplots(nrows=2, ncols = 1, figsize=(8,12))
-  axs[0].barh(vaccines_data['country'],
-      vaccines_data['daily_vaccinations'],
-      color=color_palette)
 
   ## First graph: Total number of vaccinations in top 20 countries
-  axs[0].set_title('Number of Covid-19 vaccines administrated by country')
-  axs[0].set_xlabel("Number of vaccines administrated (in millions)")
-  axs[0].set_xlim(0,100000000)
-  axs[0].grid(False)
-  ticks = [0, 20, 40, 60, 80, 100]
-  axs[0].set_xticklabels(ticks)
-  annotate_barh(axs[0]) # Add labels to each horizontal bar
+  plot_vaccinations_barh(axs[0],vaccines_data)
 
   ## Second graph: For a selected country, number of daily and weekly cases, and
   # daily new vaccinations.
-  axs[1].set_title(f'COVID-19 in {country}')
-  axs[1].set_ylabel('Number of persons')
-  axs[1].plot(country_data.index,
-              country_data['daily_new_cases'],
-              c=END_COLOR,
-              label='daily new cases')
+  plot_daily_covid_and_vaccines_line(axs[1],country_data)
+  plot_weekly_covid_cases_bar(axs[1],weekly_covid_data)
 
-  axs[1].plot(country_data.index,
-              country_data['daily_vaccinations'],
-              c=START_COLOR,
-              label='daily new vaccinations')
-
-  axs[1].bar(weekly_covid_data.index,
-             weekly_covid_data['daily_new_cases'],
-             width=5,
-             alpha=0.3,
-             color=END_COLOR,
-             label='weekly contaminations')
-
-  ### Adding the legend
+  ### Adding the legend and saving plot
   plt.legend()
   plt.savefig('covid_dashboard.png')
 
@@ -68,6 +76,11 @@ if __name__ == "__main__":
 
   country = sys.argv[1]
 
+  ### Defining Color Palette
+  color_palette = linear_gradient(START_COLOR,
+    finish_hex=END_COLOR,
+    n=20)['hex']
+
   ### Loading data
   covid_data = get_covid_data()
   vaccines_data = get_vaccines_data()
@@ -76,5 +89,5 @@ if __name__ == "__main__":
   country_data, weekly_covid_data = clean_covid_data(covid_data, vaccines_data, country)
   vaccines_data = clean_vaccines_data(vaccines_data)
 
-  ### Plot data
-  plot_data(country_data, weekly_covid_data, vaccines_data, country=country)
+  ### Plot graphs
+  plot_graphs(country_data, weekly_covid_data, vaccines_data, country=country)
