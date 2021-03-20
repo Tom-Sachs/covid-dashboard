@@ -45,7 +45,6 @@ def linear_gradient(start_hex, finish_hex="#FFFFFF", n=10):
     return color_dict(RGB_list)
 
 
-
 ### Date utils to filter data
 
 def get_date_six_months_ago():

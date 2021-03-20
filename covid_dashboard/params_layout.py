@@ -8,3 +8,4 @@ END_COLOR = "#416a92"
 font = {'family' : 'normal',
         'weight' : 'light',
         'size'   : 8}
+

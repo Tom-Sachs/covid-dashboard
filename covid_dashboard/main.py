@@ -13,14 +13,20 @@ def plot_vaccinations_barh(ax, vaccines_data):
   ''' Plots horizontal barchart displaying number of vaccines administrated in
   top 20 countries '''
 
+  # Adapting the x axis depending on the maximum value
+  xticks_spaces = 20000000
+  xlim = round(vaccines_data['daily_vaccinations'].max() + 2*xticks_spaces, -7)
+  if xlim%xticks_spaces != 0:
+    xlim = xlim - (xticks_spaces/2)
+
   ax.barh(vaccines_data['country'],
       vaccines_data['daily_vaccinations'],
       color=color_palette)
   ax.set_title('Number of Covid-19 vaccines administrated by country')
   ax.set_xlabel("Number of vaccines administrated (in millions)")
-  ax.set_xlim(0,100000000)
+  ax.set_xlim(0,xlim)
   ax.grid(False)
-  ticks = [0, 20, 40, 60, 80, 100]
+  ticks = list(range(0,int(xlim/1000000 + 20), 20))
   ax.set_xticklabels(ticks)
   annotate_barh(ax) # Add labels to each horizontal bar
 
@@ -74,7 +80,10 @@ def plot_graphs(country_data, weekly_covid_data, vaccines_data,
 
 if __name__ == "__main__":
 
-  country = sys.argv[1]
+  try:
+    country = sys.argv[1]
+  except IndexError:
+    country = 'France'
 
   ### Defining Color Palette
   color_palette = linear_gradient(START_COLOR,
